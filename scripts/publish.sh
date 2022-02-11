@@ -6,7 +6,8 @@ set -eou pipefail
 set -x
 
 git clone -b "$BRANCH" --depth=1 --single-branch https://"${PERSONAL_TOKEN}"@github.com/"${GITHUB_REPO}".git "${GITHUB_REPO}"
-cp -af files index.yaml "${GITHUB_REPO}"/
+cp -af files/* "${GITHUB_REPO}"/files/
+cp -f index.yaml "${GITHUB_REPO}"/
 
 cd "${GITHUB_REPO}"
 git add files index.yaml
