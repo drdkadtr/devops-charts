@@ -38,7 +38,7 @@ jobs:
         id: list-changed
         run: |
           ct list-changed --config ct.yaml --print-config
-          changed="true"
+          changed=$(ct list-changed --config ct.yaml)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
