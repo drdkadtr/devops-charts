@@ -1,12 +1,14 @@
 # Modified from: https://github.com/helm/chart-testing-action
 name: ci
-
 on:
   pull_request:
   push:
     paths:
       - 'charts/**/Chart.yaml'
       - 'charts/**/*'
+env:
+  GITHUB_REPO: "drdkadtr/devops-helm"
+  BRANCH: "main"
 
 jobs:
   lint-test:
@@ -57,17 +59,12 @@ jobs:
       - name: Publish charts
         if: steps.list-changed.outputs.changed == 'true'
         env:
-          BRANCH: "${GITHUB_REF}"
-          GITHUB_REPO: "drdkadtr/devops-helm"
           PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         run: |
           ./scripts/publish.sh
 
       - name: Test helm repo listing
         run: |
-          helm repo add "${{ env.GITHUB_JOB }}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
+          helm repo add "${GITHUB_JOB}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
           helm repo update
-          helm search repo "${{ env.GITHUB_JOB }}"
-        env:
-          GITHUB_REPO: "drdkadtr/devops-helm"
-          BRANCH: "${GITHUB_REF}"
+          helm search repo "${GITHUB_JOB}"
