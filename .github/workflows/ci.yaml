@@ -69,4 +69,5 @@ jobs:
         run: |
           helm repo add "${GITHUB_JOB}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
           helm repo update
-          helm search repo "${GITHUB_JOB}"
+          # search all
+          helm search repo "${GITHUB_JOB}" -l
