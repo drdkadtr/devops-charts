@@ -37,7 +37,7 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          ct list-changed
+          ct list-changed --print-config
           changed="true"
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
