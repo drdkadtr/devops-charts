@@ -1,9 +1,11 @@
 #!/bin/bash
+
+BRANCH=${BRANCH:-main}
+
 set -eou pipefail
 set -x
 
-git config -l | cat -
-git clone --depth=1 --single-branch https://"${PERSONAL_TOKEN}"@github.com/"${GITHUB_REPO}".git "${GITHUB_REPO}"
+git clone -b "$BRANCH" --depth=1 --single-branch https://"${PERSONAL_TOKEN}"@github.com/"${GITHUB_REPO}".git "${GITHUB_REPO}"
 cp -af files index.yaml "${GITHUB_REPO}"/
 
 cd "${GITHUB_REPO}"
