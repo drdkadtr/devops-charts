@@ -10,5 +10,3 @@ for dir in charts/*; do
     helm lint "$dir"
     helm package "$dir" --destination "files/"
 done
-
-helm repo index .

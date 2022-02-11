@@ -10,6 +10,8 @@ cp -af files/* "${GITHUB_REPO}"/files/
 cp -f index.yaml "${GITHUB_REPO}"/
 
 cd "${GITHUB_REPO}"
+helm repo index .
+
 git add files index.yaml
 git status -s . | cat -
 git remote -v
