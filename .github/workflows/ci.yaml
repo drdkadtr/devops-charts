@@ -33,3 +33,30 @@ jobs:
 
       - name: Run chart-testing (lint)
         run: ct lint --all --config ct.yaml
+
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+          fi
+
+      - name: Package helm charts
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          ./scripts/package.sh
+
+      - name: Configure Git
+        if: steps.list-changed.outputs.changed == 'true'
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Publish charts
+        if: steps.list-changed.outputs.changed == 'true'
+        env:
+          GITHUB_REPO: "drdkadtr/devops-helm"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/publish.sh
