@@ -1,0 +1,11 @@
+# See https://github.com/helm/chart-testing#configuration
+# https://github.com/helm/chart-testing/blob/main/pkg/config/test_config.yaml
+remote: origin
+target-branch: main
+helm-extra-args: --timeout 800s
+validate-maintainers: false
+check-version-increment: true
+upgrade: true
+skip-missing-values: true
+excluded-charts:
+  - common
