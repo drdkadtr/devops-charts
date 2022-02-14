@@ -43,7 +43,7 @@ context_workspace_check() {
 }
 
 helm_v3_check() {
-    if ! [ $(command -v helm) ]; then
+    if ! [ "$(command -v helm)" ]; then
         echo 'Error: helm is not installed.'
         exit 1
     fi
@@ -64,6 +64,6 @@ helm_v3_check() {
 }
 
 helm_repo_update() {
-    helm repo add ${1} ${2}
+    helm repo add "${1}" "${2}"
     helm repo update
 }

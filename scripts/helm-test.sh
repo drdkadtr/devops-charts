@@ -1,6 +1,6 @@
 #!/bin/bash
   
-# About: install local chart before releasing
+# About: install a local chart before releasing
 
 set -e
 
@@ -11,7 +11,6 @@ if [ -z "$BASEDIR" ] && git --version >/dev/null 2>&1; then
 fi
 
 # Constants
-# CHART_URL="https://${PERSONAL_TOKEN}@raw.githubusercontent.com/${GITHUB_REPO}/${BRANCH}/"
 NAMESPACE="ci"
 
 install(){
