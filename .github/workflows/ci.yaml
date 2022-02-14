@@ -6,6 +6,7 @@ on:
     paths:
       - 'charts/**/Chart.yaml'
       - 'charts/**/*'
+
 env:
   GITHUB_REPO: "drdkadtr/devops-helm"
   BRANCH: "main"
@@ -52,22 +53,28 @@ jobs:
         run: |
           ./scripts/package.sh
 
-      - name: Configure Git
+      - name: Start KinD
+        if: steps.list-changed.outputs.changed == 'true'
+        uses: helm/kind-action@v1.2.0
+
+      - name: Test helm (install)
         if: steps.list-changed.outputs.changed == 'true'
         run: |
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          ./scripts/helm-test.sh
+        env:
+          CHART_NAME: "helm-test"
 
       - name: Publish charts
         if: steps.list-changed.outputs.changed == 'true'
         env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+          GITHUB_ACTOR: "${GITHUB_ACTOR}"
+          PERSONAL_TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
         run: |
           ./scripts/publish.sh
 
-      - name: Test helm repo listing
+      - name: Test helm repo listing (e2e)
+        if: steps.list-changed.outputs.changed == 'true'
         run: |
           helm repo add "${GITHUB_JOB}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
           helm repo update
-          # search all
           helm search repo "${GITHUB_JOB}" -l

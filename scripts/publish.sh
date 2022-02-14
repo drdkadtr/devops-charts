@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BRANCH=${BRANCH:-main}
+BRANCH="${BRANCH:-main}"
+GITHUB_ACTOR="${GITHUB_ACTOR:-ci}"
 
 set -eou pipefail
 set -x
@@ -10,6 +11,9 @@ cp -af files/* "${GITHUB_REPO}"/files/
 
 cd "${GITHUB_REPO}"
 helm repo index .
+
+git config --global user.name "${GITHUB_ACTOR}"
+git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 git add files index.yaml
 git status -s . | cat -
