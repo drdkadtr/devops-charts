@@ -7,19 +7,14 @@ on:
       - 'charts/**/Chart.yaml'
       - 'charts/**/*'
 
-env:
-  GITHUB_REPO: "drdkadtr/devops-helm"
-  BRANCH: "main"
-
 jobs:
-  lint-test:
+  helm-lint:
     runs-on: ubuntu-latest
     strategy:
       # https://hub.docker.com/r/kindest/node/tags
       matrix:
         k8s:
           - v1.21.1
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -54,11 +49,6 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --all --config ct.yaml
 
-      - name: Package helm charts
-        if: steps.list-changed.outputs.changed == 'true'
-        run: |
-          ./scripts/package.sh
-
       - name: Start ${{ matrix.k8s }} KinD cluster
         if: steps.list-changed.outputs.changed == 'true'
         uses: helm/kind-action@v1.2.0
@@ -66,22 +56,34 @@ jobs:
           config: .github/assets/kind.yml
           node_image: kindest/node:${{ matrix.k8s }}
 
-      - name: Test helm (install)
+      - name: Test install local chart
         if: steps.list-changed.outputs.changed == 'true'
-        run: |
-          ./scripts/helm-test.sh
         env:
           CHART_NAME: "helm-test"
+        run: |
+          ./scripts/helm-test.sh
+
+  release:
+    name: Trigger helm release
+    runs-on: ubuntu-latest
+    needs: helm-lint
+    if: ${{ github.ref == 'refs/heads/main' || github.event_name != 'pull_request' }}
+    env:
+      GITHUB_REPO: "drdkadtr/devops-helm"
+      BRANCH: "main"
+
+    steps:
+      - name: Package helm charts
+        run: |
+          ./scripts/package.sh
 
       - name: Publish charts
-        if: steps.list-changed.outputs.changed == 'true'
         env:
           PERSONAL_TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
         run: |
           ./scripts/publish.sh
 
       - name: Test helm repo listing (e2e)
-        if: steps.list-changed.outputs.changed == 'true'
         run: |
           helm repo add "${GITHUB_JOB}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
           helm repo update
