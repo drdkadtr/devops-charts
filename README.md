@@ -1,5 +1,7 @@
 # devops-charts
 
+This repo publishes helm packages to this [repo](https://github.com/drdkadtr/devops-helm/).
+
 # Local testing
 
 ```
