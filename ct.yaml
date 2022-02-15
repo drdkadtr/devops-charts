@@ -7,7 +7,7 @@ chart-dirs:
 helm-extra-args: --timeout 800s
 validate-maintainers: false
 check-version-increment: true
-upgrade: true
+# debug: true
 skip-missing-values: true
 excluded-charts:
   - common

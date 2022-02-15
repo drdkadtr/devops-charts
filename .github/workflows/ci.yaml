@@ -40,8 +40,8 @@ jobs:
         id: list-changed
         run: |
           ct list-changed --config ct.yaml --print-config
-          # changed=$(ct list-changed --config ct.yaml)
-          changed="true"
+          changed=$(ct list-changed --config ct.yaml)
+          #changed="true"
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
@@ -56,12 +56,10 @@ jobs:
           config: .github/assets/kind.yml
           node_image: kindest/node:${{ matrix.k8s }}
 
-      - name: Test install local chart
+      - name: Install local chart
         if: steps.list-changed.outputs.changed == 'true'
-        env:
-          CHART_NAME: "helm-test"
         run: |
-          ./scripts/helm-test.sh
+          ./scripts/helm-local.sh
 
   release:
     name: Trigger helm release
