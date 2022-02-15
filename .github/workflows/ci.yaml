@@ -73,6 +73,11 @@ jobs:
       BRANCH: "main"
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Package helm charts
         run: |
           ./scripts/package.sh
