@@ -28,8 +28,9 @@ install(){
         --create-namespace \
         --namespace="$NAMESPACE" "${HELM_VALUES[@]}"
 
-      # Wait and fallback with `true` here as workarround for `sleep` on script reruns
+      # Fallback to `true` as workarround
       kubectl -n "$NAMESPACE" wait --for=condition=Ready pods --all --timeout=60s || true
+      sleep 1
       helm test "${CHART_NAME}" --namespace "$NAMESPACE"
   done
 }
