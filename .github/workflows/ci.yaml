@@ -59,6 +59,8 @@ jobs:
 
       - name: Install local chart
         if: steps.list-changed.outputs.changed == 'true'
+        env:
+          debug=true
         run: |
           ./scripts/helm-local.sh
 
