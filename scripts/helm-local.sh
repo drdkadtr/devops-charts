@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# About: install and test local chart
+# About: install and test local chart. Uses https://github.com/helm/chart-testing
 
 set -e
 set -x
@@ -11,8 +11,6 @@ if [ -z "$BASEDIR" ] && git --version >/dev/null 2>&1; then
     source "$BASEDIR"/scripts/constants.sh
 fi
 
-# Constants
-# https://github.com/helm/chart-testing
 UPDATED_CHARTS=$(ct list-changed --config ct.yaml)
 
 install(){
