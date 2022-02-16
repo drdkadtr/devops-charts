@@ -29,7 +29,7 @@ jobs:
 
       - name: Print versions
         run: |
-          for cmd in helm kubectl ct;do echo $cmd; $cmd version; done
+          for cmd in helm ct;do echo $cmd; $cmd version; done
 
       - name: Run chart-testing (list-changed)
         id: list-changed
