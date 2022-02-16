@@ -12,6 +12,7 @@ if [ -z "$BASEDIR" ] && git --version >/dev/null 2>&1; then
 fi
 
 # Constants
+# https://github.com/helm/chart-testing
 UPDATED_CHARTS=$(ct list-changed --config ct.yaml)
 
 install(){
