@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Default helm args: https://helm.sh/docs/helm/helm_upgrade/
-HELM_ARGS=(upgrade "--install")
+declare -a HELM_ARGS=(upgrade "--install")
 if [[ -n "$force" ]]; then HELM_ARGS+=("--force"); fi
 if [[ -n "$debug" ]]; then HELM_ARGS+=("--debug"); fi
 if [[ -n "$dryrun" ]]; then HELM_ARGS+=("--dry-run"); fi

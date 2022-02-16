@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# About: install and test local chart before release
+# About: install and test local chart
 
 set -e
 set -x
@@ -21,17 +21,15 @@ install(){
       CHART_NAME=${CHART_ARRAY[1]}
       NAMESPACE="$CHART_NAME"
       HELM_VALUES=()
+      CHART_OVERRIDE_FILE="$CHART_NAME.override.yaml"
 
-      CHART_VALUES_FILE="$CHART_NAME.test.yaml"
-      if [[ -f "$CHART_VALUES_FILE" ]]; then HELM_VALUES+=(-f "$CHART_VALUES_FILE"); fi
-
+      if [[ -f "$CHART_OVERRIDE_FILE" ]]; then HELM_VALUES+=(-f "$CHART_OVERRIDE_FILE"); fi
       helm "${HELM_ARGS[@]}" "${CHART_NAME}" "${CHART}" \
         --create-namespace \
         --namespace="$NAMESPACE" "${HELM_VALUES[@]}"
 
-      # FIXME: second run waits forever
-      # kubectl -n "$NAMESPACE" wait --for=condition=Ready pods --all --timeout=300s
-      sleep 1
+      # Wait and fallback with `true` here as workarround for `sleep` on script reruns
+      kubectl -n "$NAMESPACE" wait --for=condition=Ready pods --all --timeout=60s || true
       helm test "${CHART_NAME}" --namespace "$NAMESPACE"
   done
 }
