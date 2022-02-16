@@ -22,15 +22,11 @@ install(){
       NAMESPACE="$CHART_NAME"
       HELM_VALUES=()
       CHART_OVERRIDE_FILE="$CHART_NAME.override.yaml"
-
       if [[ -f "$CHART_OVERRIDE_FILE" ]]; then HELM_VALUES+=(-f "$CHART_OVERRIDE_FILE"); fi
       helm "${HELM_ARGS[@]}" "${CHART_NAME}" "${CHART}" \
         --create-namespace \
-        --namespace="$NAMESPACE" "${HELM_VALUES[@]}"
-
-      # Fallback to `true` as workarround
-      kubectl -n "$NAMESPACE" wait --for=condition=Ready pods --all --timeout=60s || true
-      sleep 1
+        --namespace="$NAMESPACE" "${HELM_VALUES[@]}" --wait
+      kubectl -n "$NAMESPACE" get all
       helm test "${CHART_NAME}" --namespace "$NAMESPACE"
   done
 }
