@@ -1,0 +1,37 @@
+# Modified from: https://github.com/helm/chart-testing-action
+name: ci
+on:
+  push:
+    branches:
+      - main    
+    paths:
+      - 'charts/**/Chart.yaml'
+      - 'charts/**/**/*'
+      - 'charts/**/*'
+jobs:
+  release:
+    name: Helm release
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REPO: "drdkadtr/devops-helm"
+      BRANCH: "main"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Package helm charts
+        run: |
+          ./scripts/package.sh
+
+      - name: Publish charts
+        env:
+          PERSONAL_TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
+        run: |
+          ./scripts/publish.sh
+
+      - name: Test helm repo listing (e2e)
+        run: |
+          helm repo add "${GITHUB_JOB}" "https://${{ secrets.PERSONAL_TOKEN }}@raw.githubusercontent.com/${{ env.GITHUB_REPO }}/${{ env.BRANCH }}/"
+          helm repo update
+          helm search repo "${GITHUB_JOB}" -l
