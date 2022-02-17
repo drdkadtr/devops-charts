@@ -33,9 +33,7 @@ jobs:
           config: .github/assets/kind.yml
           node_image: kindest/node:${{ matrix.k8s }}
 
-      - name: Install local chart
+      - name: Run chart-testing (install)
         if: ${{ steps.filter.outputs.charts == 'true' }}
-        env:
-          debug: true
         run: |
-          ./scripts/helm-local.sh
+          ct install --debug
