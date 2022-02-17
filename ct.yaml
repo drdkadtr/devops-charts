@@ -18,8 +18,8 @@ helm-extra-args: --timeout 800s
 chart-dirs:
   - charts
 
-excluded-charts:
-  - common
+#excluded-charts:
+#  - common
 
 # Remote chart repositories to be used for the tests.
 #chart-repos:
