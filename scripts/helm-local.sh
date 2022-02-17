@@ -26,6 +26,7 @@ install(){
       kubectl -n "$NAMESPACE" get all
       helm test "${CHART_NAME}" --namespace "$NAMESPACE"
   done
+  helm list --all-namespaces
 }
 
 uninstall() {
