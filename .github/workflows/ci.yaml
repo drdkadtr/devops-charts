@@ -1,11 +1,9 @@
 # Modified from: https://github.com/helm/chart-testing-action
 name: ci
 on:
-  pull_request:
   push:
     paths:
       - 'charts/**/Chart.yaml'
-      - 'charts/**/**/*'
       - 'charts/**/*'
 jobs:
   helm-lint:
@@ -52,34 +50,3 @@ jobs:
       - name: Run kubeval
         run: |
           ./scripts/kubeval.sh
-
-  helm-local:
-    runs-on: ubuntu-latest
-    if: ${{needs.helm-lint.outputs.changed == 'true'}}
-    needs:
-      - helm-lint
-      - kubeval
-    strategy:
-      # https://hub.docker.com/r/kindest/node/tags
-      matrix:
-        k8s:
-          - v1.21.1
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.2.0
-
-      - name: Start ${{ matrix.k8s }} KinD cluster
-        uses: helm/kind-action@v1.2.0
-        with:
-          config: .github/assets/kind.yml
-          node_image: kindest/node:${{ matrix.k8s }}
-
-      - name: Install local chart
-        env:
-          debug: true
-        run: |
-          ./scripts/helm-local.sh

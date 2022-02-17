@@ -1,9 +1,7 @@
 #!/bin/bash
-
-# About: install and test local chart. Uses https://github.com/helm/chart-testing
+# Install and test local chart, uses: https://github.com/helm/chart-testing
 
 set -e
-set -x
 
 # If BASEDIR is undefined, set it using git.
 if [ -z "$BASEDIR" ] && git --version >/dev/null 2>&1; then
@@ -28,6 +26,7 @@ install(){
       kubectl -n "$NAMESPACE" get all
       helm test "${CHART_NAME}" --namespace "$NAMESPACE"
   done
+  helm list --all-namespaces
 }
 
 uninstall() {

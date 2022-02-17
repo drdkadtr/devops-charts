@@ -1,0 +1,47 @@
+name: pr
+on:
+  pull_request:
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      charts: ${{ steps.filter.outputs.charts }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - id: filter
+        uses: dorny/paths-filter@v2.2.0
+        with:
+          filters: |
+            charts:
+              - 'charts/**/Chart.yaml'
+              - 'charts/**/*'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  helm-local:
+    runs-on: ubuntu-latest
+    if: ${{ needs.changes.outputs.charts == 'true' }}
+    strategy:
+      # https://hub.docker.com/r/kindest/node/tags
+      matrix:
+        k8s:
+          - v1.21.1
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.2.0
+
+      - name: Start ${{ matrix.k8s }} KinD cluster
+        uses: helm/kind-action@v1.2.0
+        with:
+          config: .github/assets/kind.yml
+          node_image: kindest/node:${{ matrix.k8s }}
+
+      - name: Install local chart
+        env:
+          debug: true
+        run: |
+          ./scripts/helm-local.sh
