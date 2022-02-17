@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - 'charts/**/Chart.yaml'
-      - 'charts/**/**/*'
       - 'charts/**/*'
 jobs:
   helm-lint:
