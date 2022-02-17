@@ -13,7 +13,7 @@ check-version-increment: true
 skip-missing-values: true
 helm-extra-args: --timeout 800s
 #all: true
-debug: true
+#debug: true
 
 chart-dirs:
   - charts
