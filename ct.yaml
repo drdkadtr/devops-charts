@@ -1,13 +1,27 @@
 # See https://github.com/helm/chart-testing#configuration
 # https://github.com/helm/chart-testing/blob/main/pkg/config/test_config.yaml
+
+# Detect changes to a helm chart by comparing with this remote/branch.
 remote: origin
 target-branch: main
-chart-dirs:
-  - charts
-helm-extra-args: --timeout 800s
+
+# What to check.
+validate-chart-schema: false
+validate-yaml: true
 validate-maintainers: false
 check-version-increment: true
-# debug: true
 skip-missing-values: true
+helm-extra-args: --timeout 800s
+#all: true
+debug: true
+
+chart-dirs:
+  - charts
+
 excluded-charts:
   - common
+
+# Remote chart repositories to be used for the tests.
+#chart-repos:
+#  - prometheus-community=https://prometheus-community.github.io/helm-charts
+#  - grafana=https://grafana.github.io/helm-charts
