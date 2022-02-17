@@ -2,25 +2,8 @@ name: pr
 on:
   pull_request:
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      charts: ${{ steps.filter.outputs.charts }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - id: filter
-        uses: dorny/paths-filter@v2.2.0
-        with:
-          filters: |
-            charts:
-              - 'charts/**/Chart.yaml'
-              - 'charts/**/*'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   helm-local:
     runs-on: ubuntu-latest
-    if: ${{ needs.changes.outputs.charts == 'true' }}
     strategy:
       # https://hub.docker.com/r/kindest/node/tags
       matrix:
@@ -30,17 +13,28 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      
+      - uses: dorny/paths-filter@v2.2.1
+        id: filter
+        with:
+          filters: |
+            charts:
+              - 'charts/**/Chart.yaml'
+              - 'charts/**/*'
 
       - name: Set up chart-testing
+        if: ${{ steps.filter.outputs.charts == 'true' }}
         uses: helm/chart-testing-action@v2.2.0
 
       - name: Start ${{ matrix.k8s }} KinD cluster
+        if: ${{ steps.filter.outputs.charts == 'true' }}
         uses: helm/kind-action@v1.2.0
         with:
           config: .github/assets/kind.yml
           node_image: kindest/node:${{ matrix.k8s }}
 
       - name: Install local chart
+        if: ${{ steps.filter.outputs.charts == 'true' }}
         env:
           debug: true
         run: |
