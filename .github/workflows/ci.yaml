@@ -10,7 +10,7 @@ on:
       - 'charts/**/Chart.yaml'
       - 'charts/**/*'
 jobs:
-  helm-lint:
+  ci-helm-lint:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.list-changed.outputs.changed }}
@@ -45,7 +45,7 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --all --config ct.yaml
 
-  kubeval:
+  ci-kubeval:
     runs-on: ubuntu-latest
     needs: helm-lint
     if: ${{needs.helm-lint.outputs.changed == 'true'}}

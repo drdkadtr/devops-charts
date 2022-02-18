@@ -1,8 +1,9 @@
+# Modified from: https://github.com/helm/chart-testing-action
 name: pr
 on:
   pull_request:
 jobs:
-  helm-local:
+  unit-test:
     runs-on: ubuntu-latest
     strategy:
       # https://hub.docker.com/r/kindest/node/tags
