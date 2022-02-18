@@ -1,6 +1,7 @@
 # Modified from: https://github.com/helm/chart-testing-action
 name: ci
 on:
+  pull_request:  
   push:
     paths:
       - 'charts/**/Chart.yaml'
