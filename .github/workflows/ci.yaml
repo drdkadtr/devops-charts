@@ -15,7 +15,7 @@ jobs:
     outputs:
       changed: ${{ steps.list-changed.outputs.changed }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -50,7 +50,7 @@ jobs:
     needs: helm-lint
     if: ${{needs.helm-lint.outputs.changed == 'true'}}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run kubeval
         run: |
           ./scripts/kubeval.sh
