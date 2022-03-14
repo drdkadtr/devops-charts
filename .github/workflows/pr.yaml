@@ -25,7 +25,7 @@ jobs:
 
       - name: Set up chart-testing
         if: ${{ steps.filter.outputs.charts == 'true' }}
-        uses: helm/chart-testing-action@v2.2.0
+        uses: helm/chart-testing-action@v2.2.1
 
       - name: Start ${{ matrix.k8s }} KinD cluster
         if: ${{ steps.filter.outputs.charts == 'true' }}
