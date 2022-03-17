@@ -1,0 +1,108 @@
+apiVersion: v1
+entries:
+  argo-application:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-03-17T14:04:33.230499+01:00"
+    description: A Helm chart for creating argo-cd apps
+    digest: 5349d356f396318102f6b25340921acf91495739a405f0123d2bd68ebb168076
+    name: argo-application
+    urls:
+    - files/argo-application-0.1.5.tgz
+    version: 0.1.5
+  base-chart:
+  - apiVersion: v1
+    created: "2022-03-17T14:04:33.231702+01:00"
+    dependencies:
+    - name: common
+      repository: file://./../common
+      version: "0"
+    description: A base Helm chart for DR Applications
+    digest: bcebdcf85f4c6cd48c93e179c11c9dbd87c3194a6329ece2e642e3e59b16b574
+    name: base-chart
+    urls:
+    - files/base-chart-0.0.69.tgz
+    version: 0.0.69
+  common:
+  - apiVersion: v1
+    created: "2022-03-17T14:04:33.232343+01:00"
+    description: Common templates for DR helm charts
+    digest: da56dd444e938cc36a877fb493f4524ceb4f98b3dd627d1555bf1d76a389a053
+    name: common
+    urls:
+    - files/common-0.0.45.tgz
+    version: 0.0.45
+  cronjob-chart:
+  - apiVersion: v1
+    created: "2022-03-17T14:04:33.233211+01:00"
+    dependencies:
+    - name: common
+      repository: file://./../common
+      version: "0"
+    description: A cronjob Helm chart for DR Applications
+    digest: a1d8447a6c365bb6bd8d85e0f371c397f10e54650a6c1d63b4a10c0d40b46398
+    name: cronjob-chart
+    urls:
+    - files/cronjob-chart-0.0.15.tgz
+    version: 0.0.15
+  dr-devops-kong-key-auth:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-03-17T14:04:33.235341+01:00"
+    description: A Helm chart for Kubernetes
+    digest: f1cb70fb6aaa6057aebf0ac7325f9efd634bb5fce435ed46bd9f43bc5b4edebf
+    name: dr-devops-kong-key-auth
+    type: application
+    urls:
+    - files/dr-devops-kong-key-auth-0.1.5.tgz
+    version: 0.1.5
+  kong-consumer-admin:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-03-17T14:04:33.236178+01:00"
+    description: A Helm chart for Kubernetes
+    digest: 64aaadc14e0b231a812a7b7ecf06a4e9694bad790bb6eaff870b7195db98998d
+    name: kong-consumer-admin
+    type: application
+    urls:
+    - files/kong-consumer-admin-0.1.0.tgz
+    version: 0.1.0
+  namespace-chart:
+  - apiVersion: v1
+    created: "2022-03-17T14:04:33.237203+01:00"
+    dependencies:
+    - name: common
+      repository: file://./../common
+      version: "0"
+    description: A namespace Helm chart for review apps
+    digest: 0f80e95bbcf762e92aa1a9715ec1aabdd6caaf7968c56f0f18276a8585780d51
+    name: namespace-chart
+    urls:
+    - files/namespace-chart-0.0.5.tgz
+    version: 0.0.5
+  reverse-proxy-chart:
+  - apiVersion: v1
+    created: "2022-03-17T14:04:33.238342+01:00"
+    dependencies:
+    - name: common
+      repository: file://./../common
+      version: "0"
+    description: A base Helm chart for applications that requires a reverse proxy,
+      for example a PHP Application
+    digest: 550a1d3082d9d2d8956fb011368eadbd105fa04b1ee2e469782be8b315142448
+    name: reverse-proxy-chart
+    urls:
+    - files/reverse-proxy-chart-0.0.65.tgz
+    version: 0.0.65
+  worker:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-03-17T14:04:33.238882+01:00"
+    description: A Worker Container helm chart to be used for a worker deployment,
+      typically deployed along side a normal web app deployment
+    digest: d94050396291f9ea32538dd0763467206bc5383081efd54924677a23af2dde54
+    name: worker
+    urls:
+    - files/worker-0.1.5.tgz
+    version: 0.1.5
+generated: "2022-03-17T14:04:33.229791+01:00"
