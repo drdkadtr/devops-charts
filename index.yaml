@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  dr-devops-kong-key-auth:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-03-17T19:36:49.45308+01:00"
+    description: A Helm chart for Kubernetes
+    digest: cd3bfa13af27a321a461342205dff8d7b263e989a5613fb816369d1e5773972f
+    name: dr-devops-kong-key-auth
+    type: application
+    urls:
+    - files/dr-devops-kong-key-auth-0.1.6.tgz
+    version: 0.1.6
+generated: "2022-03-17T19:36:49.452605+01:00"
